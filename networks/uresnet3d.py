@@ -199,8 +199,12 @@ class uresnet3d(uresnetcore):
 
         # At the bottom, do another residual block:
         for j in xrange(self._params['RESIDUAL_BLOCKS_DEEPEST_LAYER']):
+
             x = residual_block(x, self._params['TRAINING'],
                 batch_norm=self._params['BATCH_NORM'], name="deepest_block_{0}".format(j))
+
+        if verbosity > 0:
+            print "Finished Residual Blocks: x.get_shape(): {s}".format(s=x.get_shape())
 
 
         # Come back up the network:
@@ -209,9 +213,6 @@ class uresnet3d(uresnetcore):
             # How many filters to return from upsampling?
             n_filters = network_filters[-1].get_shape().as_list()[-1]
 
-            if verbosity > 1:
-                print "Layer {i}: x.get_shape(): {s}".format(
-                    i=i, s=x.get_shape())
 
             name = "upsample"
             name += "_{0}".format(i)
